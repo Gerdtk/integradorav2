@@ -1,25 +1,17 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import ExploreContainer from '../components/ExploreContainer';
-import './Tab1.css';
 
-const Tab1: React.FC = () => {
+import React from 'react';
+import { IonIcon } from '@ionic/react';
+import { logoIonic} from 'ionicons/icons';
+
+
+function Example() {
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Tab 1</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Tab 1</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <ExploreContainer name="Tab 1 page" />
-      </IonContent>
-    </IonPage>
+    <>
+      <IonIcon icon={logoIonic}></IonIcon>
+      <IonIcon icon={logoIonic} size="large"></IonIcon>
+      <IonIcon icon={logoIonic} color="primary"></IonIcon>
+      <IonIcon icon={logoIonic} size="large" color="primary"></IonIcon>
+    </>
   );
-};
-
-export default Tab1;
+}
+export default Example;
