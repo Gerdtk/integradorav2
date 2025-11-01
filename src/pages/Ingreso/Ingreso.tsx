@@ -4,7 +4,10 @@ import {
   IonList, IonItem, IonInput, IonButton, IonLoading, IonToast
 } from '@ionic/react';
 import { useIonRouter } from '@ionic/react';
+<<<<<<< HEAD
 import "./Ingreso.css";
+=======
+>>>>>>> 758f91163bd843217a7092f6fcdaeec7d9ab6784
 import {signInWithEmailAndPassword} from 'firebase/auth';
 //---------------------//
 

@@ -1,0 +1,125 @@
+🌿 DOCUMENTO DE REFERENCIA: API DEL BACKEND
+
+📦 BASE URL:
+http://127.0.0.1:5001/integradora2-4b395/us-central1/api/
+
+----------------------------------------------------
+1️⃣ COLECCIÓN: PLANTAS
+----------------------------------------------------
+
+🔹 Obtener todas las plantas
+GET /PlantasGeneral
+→ Retorna un listado con todas las plantas del Firestore.
+
+Ejemplo de respuesta:
+[
+  { "id": "abc123", "nombre": "Nopal", "tipo": "Suculenta" }
+]
+
+🔹 Obtener una planta por nombre
+GET /PlantasGeneral/:nombre
+→ Devuelve los datos de una planta según su nombre.
+
+Ejemplo de respuesta:
+{
+  "id": "def456",
+  "nombre": "Cactus",
+  "tipo": "Desértica"
+}
+
+🔹 Agregar nueva planta
+POST /PlantasGeneral
+Body (JSON):
+{
+  "nombre": "Cactus",
+  "tipo": "Desértica"
+}
+→ Crea una planta nueva en la base de datos.
+
+Respuesta:
+{ "id": "xyz789", "message": "Planta agregada" }
+
+🔹 Actualizar planta
+PUT /PlantasGeneral/:nombre
+Body:
+{
+  "nombre": "Cactus Azul",
+  "tipo": "Desértica"
+}
+→ Actualiza los datos de una planta por Nombre.
+
+🔹 Eliminar planta
+DELETE /PlantasGeneral/:nombre
+→ Elimina la planta con el Nombre indicado.
+
+
+----------------------------------------------------
+2️⃣ COLECCIÓN: MOBILIARIO
+----------------------------------------------------
+
+🔹 Obtener todo el mobiliario
+GET /Mobiliario
+→ Retorna un listado con todo el mobiliario registrado.
+
+Ejemplo de respuesta:
+[
+  { "id": "mob001", "nombre": "Mesa", "cantidad": 5 }
+]
+
+🔹 Obtener un mobiliario por nombre
+GET /Mobiliario/:nombre
+→ Devuelve los datos de un elemento de mobiliario.
+
+🔹 Agregar nuevo mobiliario
+POST /Mobiliario
+Body (JSON):
+{
+  "nombre": "Silla",
+  "cantidad": 4
+}
+→ Crea un nuevo registro de mobiliario.
+
+Respuesta:
+{ "id": "mob999", "message": "Mobiliario agregado" }
+
+🔹 Actualizar mobiliario
+PUT /Mobiliario/:nombre
+Body:
+{
+  "nombre": "Silla reforzada",
+  "cantidad": 8
+}
+
+🔹 Eliminar mobiliario
+DELETE /Mobiliario/:nombre
+→ Elimina el mobiliario por su ID.
+
+
+----------------------------------------------------
+3️⃣ NOTAS GENERALES
+----------------------------------------------------
+- El backend está hecho con Express + Firebase Functions.
+- Las rutas se dividen por archivo:
+    /routes/plantasRoutes.ts
+    /routes/mobiliarioRoutes.ts
+- Los middlewares (como verifyAuth) se agregarán después.
+- Para pruebas, se puede quitar el middleware.
+- agregue una pagina de pruebas para plantas en el frontend, luego la quitas o vez que haces xd.
+
+====================================================
+
+Gracias ChatGPT por todo. xddddd
+Tambien agregue una pagina de pruebas en el Frontend
+
+Para inciar el Backend tienes que tener instalado Firebase CLI
+- npm install -g firebase-tools
+- firebase --version      <--- con esto verificas si se instalo xd
+Despues iniciar sesion con tu cuenta de Firebase asi que Keyla te tienen que agregar a la base de datos.
+- firebase login
+Cuando tengas esto listo solo prendes el Backend primero y despues el Frontend
+Backend:
+- npm run build
+- firebase emulators:start
+
+Frontend:
+- ionic serve
