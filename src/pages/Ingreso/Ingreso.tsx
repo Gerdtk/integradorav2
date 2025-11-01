@@ -4,6 +4,7 @@ import {
   IonList, IonItem, IonInput, IonButton, IonLoading, IonToast
 } from '@ionic/react';
 import { useIonRouter } from '@ionic/react';
+import "./Ingreso.css";
 import {signInWithEmailAndPassword} from 'firebase/auth';
 //---------------------//
 

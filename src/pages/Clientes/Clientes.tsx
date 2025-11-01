@@ -4,6 +4,7 @@ import {
   IonList, IonItem, IonInput, IonButton, IonLoading, IonToast
 } from '@ionic/react';
 import { useIonRouter } from '@ionic/react';
+import './Clientes.css'
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from '../../lib/firebase';

@@ -12,9 +12,9 @@ import {
 import { IonReactRouter } from '@ionic/react-router';
 import { ellipse, square, triangle, people } from 'ionicons/icons';
 
-import Tab1 from './pages/Tab1';
-import Tab2 from './pages/Tab2';
-import Tab3 from './pages/Tab3';
+import Perfil from './pages/tabs/Perfil/Perfil';
+import Tab2 from './pages/tabs/home/Home';
+import Tab3 from './pages/tabs/plantas/Plantas';
 import Clientes from './pages/Clientes/Clientes';
 import Ingreso from './pages/Ingreso/Ingreso';
 
@@ -51,7 +51,7 @@ const App: React.FC = () => {
         <IonTabs>
           <IonRouterOutlet>
             <Switch>
-              <Route path="/tab1" component={Tab1} exact />
+              <Route path="/Perifl" component={Perfil} exact />
               <Route path="/tab2" component={Tab2} exact />
               <Route path="/tab3" component={Tab3} exact />
               <Route path="/clientes" component={Clientes} exact />

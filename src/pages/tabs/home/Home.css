@@ -1,0 +1,49 @@
+/* === Estructura general === */
+.main-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* centra verticalmente */
+  align-items: center;     /* centra horizontalmente */
+  background: linear-gradient(to bottom, rgb(209, 240, 181), rgb(90, 90, 75));
+}
+
+/* Espacio reservado para el avatar */
+.avatar-space {
+  height: 120px; /* se puede ajustar */
+  width: 120px;
+  margin-bottom: 30px; /* separación del grid */
+  border-radius: 50%;
+  background: #222; /* placeholder visual */
+}
+
+/* === Cuadrícula de botones === */
+.button-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 140px);
+  grid-gap: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+/* === Botones === */
+.btn {
+  height: 50px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  color: #000;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+/* Colores */
+.uno { background: #d1fccc; }
+.dos { background: #d1fccc; }
+.tres { background: #d1fccc; }
+.cuatro { background: #d1fccc; }
