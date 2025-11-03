@@ -4,10 +4,7 @@ import {
   IonList, IonItem, IonInput, IonButton, IonLoading, IonToast
 } from '@ionic/react';
 import { useIonRouter } from '@ionic/react';
-<<<<<<< HEAD
 import "./Ingreso.css";
-=======
->>>>>>> 758f91163bd843217a7092f6fcdaeec7d9ab6784
 import {signInWithEmailAndPassword} from 'firebase/auth';
 //---------------------//
 
@@ -30,7 +27,7 @@ const handleLogin = async () =>{
     await signInWithEmailAndPassword(auth, correo, password);
     //
     setToast({open:true, msg:'ingreso exitoso'});
-    ionRouter.push('/tab2', 'forward', 'replace');
+    ionRouter.push('/Home', 'forward', 'replace');
 
     setCorreo('');
     setPassword('');

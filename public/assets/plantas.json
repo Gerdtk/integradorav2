@@ -1,0 +1,43 @@
+[
+    {
+        "id": 1,
+        "common_name": "Aloe Vera",
+        "scientific_name": "Aloe barbadensis miller",
+        "family": "Asphodelaceae",
+        "txt": "Es una planta de hoja perenne, probablemente se originó en la península arábiga, pero crece de forma silvestre en climas tropicales, semitropicales y áridos de todo el mundo.​ Se cultiva para productos comerciales, principalmente como tratamiento tópico utilizado durante siglos.La especie es atractiva con fines decorativos y tiene éxito en interiores como planta de maceta.​",
+        "txt_2": "El aloe vera es una planta suculenta que pertenece a la familia Asphodelaceae. Es conocida por sus hojas carnosas y verdes que contienen un gel transparente utilizado en productos de cuidado de la piel y remedios medicinales. El aloe vera se cultiva en climas cálidos y secos, y es apreciada por sus propiedades hidratantes y curativas.",
+        "txt_3": "La planta tiene hojas carnosas triangulares con bordes dentados, flores tubulares amarillas y frutos que contienen numerosas semillas. La floración no se produce hasta los tres o cuatro años de edad. El fruto es una cápsula de 20-25 por 6-8 mm, con semillas de unos 5 mm, sin contar las alas.",
+        "biblio": "https://es.wikipedia.org/wiki/Aloe_vera",
+        "imagen": "/assets/img/aloe.jpg",
+        "imagen_2": "/assets/img/aloe2.jpg",
+        "imagen_3": "/assets/img/aloe3.jpg"
+
+    },
+    {
+        "id": 2,
+        "common_name": "Huizache",
+        "scientific_name": "Vachellia farnesiana",
+        "family": "Fabaceae",
+        "txt": "El huizache es un árbol o arbusto espinoso que puede crecer hasta 6 metros de altura. Sus hojas son compuestas y sus flores son pequeñas y amarillas, agrupadas en racimos. El fruto es una vaina que contiene varias semillas. Esta planta es nativa de América y se encuentra comúnmente en regiones áridas y semiáridas.",
+        "txt_2": "El huizache es conocido por su resistencia a la sequía y su capacidad para crecer en suelos pobres. Se utiliza en la reforestación de áreas degradadas y como planta ornamental. Además, sus flores son apreciadas por su fragancia y se utilizan en la producción de perfumes.",
+        "txt_3": "El huizache tiene una corteza rugosa y espinosa, lo que le proporciona protección contra herbívoros. Sus raíces son profundas, lo que le permite acceder a agua en capas más profundas del suelo. La planta también tiene la capacidad de fijar nitrógeno en el suelo, mejorando su fertilidad.",
+        "biblio": "https://es.wikipedia.org/wiki/Vachellia_farnesiana",
+        "imagen": "/assets/img/huizache.jpg",
+        "imagen_2": "/assets/img/flores-huizache.jpg",
+        "imagen_3": "/assets/img/huizache-natural.jpg"
+    },
+    {
+        "id": 3,
+        "common_name": "Sauce del desierto",
+        "scientific_name": "Salix gooddingii",
+        "family": "Salicaceae",
+        "txt": "El sauce del desierto es un árbol caducifolio que puede alcanzar alturas de hasta 15 metros. Sus hojas son alargadas y lanceoladas, y sus flores son pequeñas y agrupadas en amentos. El fruto es una cápsula que libera semillas con pelos sedosos. Esta planta es nativa de América del Norte y se encuentra comúnmente en áreas ribereñas y desérticas.",
+        "txt_2": "El sauce del desierto es conocido por su capacidad para tolerar condiciones áridas y su resistencia a la sequía. Se utiliza en la restauración de hábitats ribereños y como planta ornamental. Además, sus hojas y corteza tienen propiedades medicinales y se han utilizado tradicionalmente para tratar diversas afecciones.",
+        "txt_3": "El sauce del desierto tiene una corteza lisa y grisácea, que se vuelve más rugosa con la edad. Sus raíces son extensas y ayudan a estabilizar el suelo en áreas propensas a la erosión. La planta también proporciona hábitat y alimento para diversas especies de fauna silvestre.",
+        "biblio": "https://es.wikipedia.org/wiki/Salix_gooddingii",
+        "imagen": "/assets/img/sauce.webp",
+        "imagen_2": "/assets/img/flores-sauced.jpg",
+        "imagen_3": "/assets/img/flores-sauced2.jpg"
+    }
+
+]

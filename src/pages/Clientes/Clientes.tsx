@@ -8,6 +8,7 @@ import './Clientes.css';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from '../../lib/firebase';
+import './Clientes.css';
 
 const Clientes: React.FC = () => {
   const [usuario, setUsuario] = useState('');

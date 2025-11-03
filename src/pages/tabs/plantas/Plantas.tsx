@@ -1,6 +1,8 @@
 //todo esto me lo dio chat de ejemplo para que se vea que si muestra las plantas dentro de Firestore
 import { useEffect, useState } from "react";
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel } from "@ionic/react";
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonButton, IonIcon} from "@ionic/react";
+import { logOutOutline} from 'ionicons/icons'; 
+import './Plantas.css';
 
 const API_URL = "http://127.0.0.1:5001/integradora2-4b395/us-central1/api/PlantasGeneral";
 
@@ -29,6 +31,7 @@ const Plantas: React.FC = () => {
 
   return (
     <IonPage>
+      <IonButton routerLink='./Home' className='btnE'><IonIcon icon={logOutOutline}></IonIcon></IonButton>
       <IonHeader>
         <IonToolbar>
           <IonTitle>Listado de plantas</IonTitle>
@@ -50,8 +53,10 @@ const Plantas: React.FC = () => {
             <p>No hay plantas registradas.</p>
           )}
         </IonList>
+        <IonButton routerLink='./Home'>Go to Root</IonButton>
       </IonContent>
     </IonPage>
+    
   );
 };
 
