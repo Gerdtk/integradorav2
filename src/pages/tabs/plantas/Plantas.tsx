@@ -53,7 +53,6 @@ const Plantas: React.FC = () => {
             <p>No hay plantas registradas.</p>
           )}
         </IonList>
-        <IonButton routerLink='./Home'>Go to Root</IonButton>
       </IonContent>
     </IonPage>
     
