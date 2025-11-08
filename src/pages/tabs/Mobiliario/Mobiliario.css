@@ -18,9 +18,14 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
   border: none;
   cursor: pointer;
+<<<<<<< HEAD
   
 }
 
+=======
+  z-index: 3;
+}
+>>>>>>> 393abd68a4419fd29cddc12ab28ebe56679db230
 .btnE::part(native){
   background: transparent !important;
   color: white !important;
@@ -42,6 +47,7 @@
 
 ion-row {
   align-items: flex-start;
+<<<<<<< HEAD
   gap: 4px;
 }
 ion-col{
@@ -141,3 +147,16 @@ ion-grid {
   width: 100%;                 /* 👈 fuerza el grid a ocupar todo el espacio */
   padding: 0;
 }
+=======
+  gap: 7px;
+}
+
+.colNuevo, 
+.colMobi{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background: rgba(200, 230, 201, 0.4);
+  border-right: #ffffff 2px solid;
+}
+>>>>>>> 393abd68a4419fd29cddc12ab28ebe56679db230

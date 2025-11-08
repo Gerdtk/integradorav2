@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { Route, Redirect, Switch, useLocation} from 'react-router-dom';
+=======
+import { Route, Redirect, Switch } from 'react-router-dom';
+>>>>>>> 393abd68a4419fd29cddc12ab28ebe56679db230
 import {
   IonApp,
   IonIcon,
@@ -7,8 +11,12 @@ import {
   IonTabBar,
   IonTabButton,
   IonTabs,
+<<<<<<< HEAD
   setupIonicReact,
   
+=======
+  setupIonicReact
+>>>>>>> 393abd68a4419fd29cddc12ab28ebe56679db230
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { person, settings, leaf,hammer } from 'ionicons/icons';
@@ -43,6 +51,7 @@ import './theme/variables.css';
 
 setupIonicReact();
 
+<<<<<<< HEAD
 const AppContent: React.FC = () => {
 
   const location = useLocation();
@@ -50,6 +59,13 @@ const AppContent: React.FC = () => {
 
   const showIngresoTabs = ['/Clientes', '/Ingreso'].includes(path);
   const showMainTabs = ['/Home', '/Pefil', '/plantas', '/Mobiliario', '/Iot'].includes(path);
+=======
+const App: React.FC = () => {
+  // Si quieres empujar programáticamente:
+  // const ionRouter = useIonRouter();
+  // useEffect(() => { ionRouter.push('/clientes', 'forward', 'replace'); }, []);
+
+>>>>>>> 393abd68a4419fd29cddc12ab28ebe56679db230
 
   const ShowTab = location.pathname === '/clientes' || location.pathname === '/Ingreso'; 
   const Tabtwo = location.pathname === '/Home' || location.pathname === '/Perfil' || location.pathname === '/plantas' || location.pathname === '/Mobiliario' || location.pathname === '/IoT';
@@ -109,6 +125,7 @@ const AppContent: React.FC = () => {
   );
 };
 
+<<<<<<< HEAD
 const App: React.FC = () =>{
   return(
     <IonApp>
@@ -119,4 +136,6 @@ const App: React.FC = () =>{
   );
 };
 
+=======
+>>>>>>> 393abd68a4419fd29cddc12ab28ebe56679db230
 export default App;

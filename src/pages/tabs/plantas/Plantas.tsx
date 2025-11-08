@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useEffect, useState } from "react";
 import {
   IonPage,
@@ -21,22 +22,38 @@ import "./Plantas.css";
 
 const API_URL =
   "http://127.0.0.1:5001/integradora2-4b395/us-central1/api/PlantasGeneral";
+=======
+//todo esto me lo dio chat de ejemplo para que se vea que si muestra las plantas dentro de Firestore
+import { useEffect, useState } from "react";
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonButton, IonIcon} from "@ionic/react";
+import { logOutOutline} from 'ionicons/icons'; 
+import './Plantas.css';
+
+const API_URL = "http://127.0.0.1:5001/integradora2-4b395/us-central1/api/PlantasGeneral";
+>>>>>>> 393abd68a4419fd29cddc12ab28ebe56679db230
 
 interface Planta {
   id: string;
   nombre: string;
   tipo: string;
+<<<<<<< HEAD
   estado?: string;
   fechaIngreso?: string;
+=======
+>>>>>>> 393abd68a4419fd29cddc12ab28ebe56679db230
 }
 
 const Plantas: React.FC = () => {
   const [plantas, setPlantas] = useState<Planta[]>([]);
+<<<<<<< HEAD
   const [fechaApp, setFechaApp] = useState<string>("");
   const [nombreSel, setNombreSel] = useState<string>("--");
   const[showForm, setShowForm] = useState(false);
 
   // Obtener listado desde el backend
+=======
+
+>>>>>>> 393abd68a4419fd29cddc12ab28ebe56679db230
   useEffect(() => {
     const obtenerPlantas = async () => {
       try {
@@ -47,6 +64,7 @@ const Plantas: React.FC = () => {
         console.error("Error al obtener plantas:", err);
       }
     };
+<<<<<<< HEAD
     obtenerPlantas();
 
     // Fecha actual
@@ -59,10 +77,15 @@ const Plantas: React.FC = () => {
       minute: "2-digit",
     });
     setFechaApp(formato);
+=======
+
+    obtenerPlantas();
+>>>>>>> 393abd68a4419fd29cddc12ab28ebe56679db230
   }, []);
 
   return (
     <IonPage>
+<<<<<<< HEAD
       {/* === Botón Salir === */}
       <IonButton routerLink="./Home" className="btnE">
         <IonIcon icon={logOutOutline}></IonIcon>
@@ -159,3 +182,34 @@ const Plantas: React.FC = () => {
 };
 
 export default Plantas;
+=======
+      <IonButton routerLink='./Home' className='btnE'><IonIcon icon={logOutOutline}></IonIcon></IonButton>
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>Listado de plantas</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+
+      <IonContent className="ion-padding">
+        <IonList>
+          {plantas.length > 0 ? (
+            plantas.map((planta) => (
+              <IonItem key={planta.id}>
+                <IonLabel>
+                  <h2>{planta.nombre}</h2>
+                  <p>{planta.tipo}</p>
+                </IonLabel>
+              </IonItem>
+            ))
+          ) : (
+            <p>No hay plantas registradas.</p>
+          )}
+        </IonList>
+      </IonContent>
+    </IonPage>
+    
+  );
+};
+
+export default Plantas;
+>>>>>>> 393abd68a4419fd29cddc12ab28ebe56679db230

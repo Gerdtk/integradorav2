@@ -2,7 +2,11 @@
 import React from 'react';
 import { IonContent, IonIcon, IonButton, IonGrid, IonCol, IonRow } from '@ionic/react';
 import { logOutOutline, person} from 'ionicons/icons';
+<<<<<<< HEAD
 import './Perfil.css'; 
+=======
+import './Perfil.css';
+>>>>>>> 393abd68a4419fd29cddc12ab28ebe56679db230
 
 
 function Example() {
