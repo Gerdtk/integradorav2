@@ -1,4 +1,4 @@
-//Pagina de Plantas - CRUD completo ejemplo (chat lo dio xd)
+//Pagina Plantilla de Plantas (es un backup temporal no hacer mucho caso, puede borrarse sin problema xd).
 import { useEffect, useState } from "react";
 import {
   IonPage, IonHeader, IonToolbar, IonTitle, IonContent,

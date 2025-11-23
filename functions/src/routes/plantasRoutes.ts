@@ -1,14 +1,35 @@
 import { Router, Request, Response } from "express";
 import { Firestore } from "firebase-admin/firestore";
-import { verifyAuth } from "../middlewares/authMiddleware";
+//import { verifyAuth } from "../middlewares/authMiddleware";
 
 export default function plantasRoutes(db: Firestore) {
   const router = Router();
 
-  // ✅ Obtener todas las plantas
+  //LogPlantas
+  const registrarLog = async (
+    accion: string,
+    plantaId: string,
+    nombrePlanta: string,
+    usuario: string = "sistema",
+  ) => {
+    try {
+      await db.collection("LogsPlantas").add({
+        accion,
+        plantaId,
+        nombrePlanta,
+        usuario,
+        fecha: new Date().toISOString(),
+      });
+    } catch (error) {
+      console.error("Error al registrar log de planta:", error);
+    }
+  };
+
+
+  //Obtener todas las plantas
   router.get("/", async (_req: Request, res: Response) => {
     try {
-      const snapshot = await db.collection("PlantasGeneral").get();
+      const snapshot = await db.collection("Plantas").get();
       const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       res.status(200).json(data);
     } catch (err: any) {
@@ -16,33 +37,36 @@ export default function plantasRoutes(db: Firestore) {
     }
   });
 
-  // obtener planta por nombre
-  router.get("/:nombre", async (req: Request, res: Response) => {
+  //Obtener una planta por id
+  router.post("/id", async (req: Request, res: Response) => {
     try {
-      const docRef = await db.collection("PlantasGeneral").doc(req.params.id).get();
-      if (!docRef.exists) {
+      const doc = await db.collection("Plantas").doc(req.body.id).get();
+      if (!doc.exists) {
         res.status(404).json({ error: "Planta no encontrada" });
         return;
       }
-      res.status(200).json({ id: docRef.id, ...docRef.data() });
+      res.status(200).json({ id: doc.id, ...doc.data() });
     } catch (err: any) {
       res.status(500).json({ error: err.message });
     }
   });
 
-  // ✅ Agregar nueva planta (requiere token)
-  router.post("/", verifyAuth, async (req: Request, res: Response) => { //Para pruebas quitar verifyAuth
+  //Agregar nueva planta
+  router.post("/", async (req: Request, res: Response) => { //Para pruebas quitar verifyAuth
     try {
-      const { nombre, tipo } = req.body;
-      if (!nombre || !tipo){
+      const { nombre, estado, cantidad, usuario } = req.body;
+      if (!nombre || !estado || !cantidad) {
         res.status(400).json({ error: "Faltan datos" });
         return;
       }
-      const ref = await db.collection("PlantasGeneral").add({
+      const ref = await db.collection("Plantas").add({
         nombre,
-        tipo,
-        creadoEn: new Date(),
+        estado,
+        cantidad,
+        fechaGerminacion: new Date(),
       });
+      // Registrar log de creación
+      await registrarLog("agrego", ref.id, nombre, usuario || "sistema");
 
       res.status(201).json({ id: ref.id, message: "Planta agregada" });
     } catch (err: any) {
@@ -50,27 +74,53 @@ export default function plantasRoutes(db: Firestore) {
     }
   });
 
-  // ✅ Actualizar una planta
-  //No probe estos dos, pero deberian funcionar, si no funcionan avisame y si da algun error cambia el router.put("/:nombre" por router.put("/:id"), igual el de abajo xd
-  router.put("/:nombre", verifyAuth, async (req: Request, res: Response) => { //Para pruebas quitar verifyAuth
+  //Actualizar una planta (todo)
+  router.put("/:id", async (req: Request, res: Response) => { //Para pruebas quitar verifyAuth
     try {
-      const { nombre, tipo } = req.body;
-      await db.collection("PlantasGeneral").doc(req.params.id).update({ nombre, tipo });
+      const { nombre, estado, cantidad, usuario } = req.body;
+      if (!nombre || !estado || !cantidad) {
+        res.status(400).json({ error: "Faltan datos para actualizar" });
+        return;
+      }
+      await db.collection("Plantas").doc(req.params.id).update({
+        nombre,
+        estado,
+        cantidad
+      });
+
+      // Registrar log de actualización
+      await registrarLog("actualizo", req.params.id, nombre, usuario || "sistema");
+
       res.status(200).json({ message: "Planta actualizada correctamente" });
     } catch (err: any) {
       res.status(500).json({ error: err.message });
     }
   });
 
-  // ✅ Eliminar una planta
-  router.delete("/:nombre", verifyAuth, async (req: Request, res: Response) => { //Para pruebas quitar verifyAuth
+  //Eliminar una planta COMPLETO
+  router.delete("/:id", async (req: Request, res: Response) => {
     try {
-      await db.collection("PlantasGeneral").doc(req.params.id).delete();
+      const docRef = db.collection("Plantas").doc(req.params.id);
+      const doc = await docRef.get();
+
+      if (!doc.exists) {
+        res.status(404).json({ error: "Planta no encontrada" });
+        return;
+      }
+
+      const nombrePlanta = doc.data()?.nombre || "Desconocido";
+      const usuario = req.body.usuario || "sistema";
+
+      await docRef.delete();
+
+      await registrarLog("eliminó", req.params.id, nombrePlanta, usuario);
+
       res.status(200).json({ message: "Planta eliminada correctamente" });
     } catch (err: any) {
       res.status(500).json({ error: err.message });
     }
   });
+
 
   return router;
 }

@@ -9,14 +9,16 @@ const db = admin.firestore();
 
 const app = express();
 app.use(cors({ origin: true })); // Permite peticiones desde cualquier origen (frontend)
+app.options("*", cors());
 app.use(express.json()); // Permite leer JSON del body
 
 //Importar tus rutas personalizadas
 import plantasRoutes from "./routes/plantasRoutes";
 import mobiliarioRoutes from "./routes/mobiliarioRoutes";
+//import { verifyAuth } from "./middlewares/authMiddleware";
 
 //Montar las rutas en el servidor
-app.use("/PlantasGeneral", plantasRoutes(db));
+app.use("/Plantas", plantasRoutes(db));
 app.use("/Mobiliario", mobiliarioRoutes(db));
 
 //Exportar como función HTTPS
