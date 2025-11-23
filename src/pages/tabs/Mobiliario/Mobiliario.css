@@ -18,8 +18,14 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
   border: none;
   cursor: pointer;
+<<<<<<< HEAD
+  
+}
+
+=======
   z-index: 3;
 }
+>>>>>>> 393abd68a4419fd29cddc12ab28ebe56679db230
 .btnE::part(native){
   background: transparent !important;
   color: white !important;
@@ -41,6 +47,107 @@
 
 ion-row {
   align-items: flex-start;
+<<<<<<< HEAD
+  gap: 4px;
+}
+ion-col{
+  --padding-start: 0;
+  --padding-end: 0;
+}
+
+
+.slideContainer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease, opacity 0.4s ease;
+  opacity: 0;
+}
+
+.slideContainer.open {
+  max-height: 500px;
+  opacity: 1;
+}
+
+ion-item {
+  --background: rgba(255, 255, 255, 0.1);
+  --border-color: rgba(255, 255, 255, 0.15);
+  --border-radius: 8px;
+  --padding-start: 8px;
+  --highlight-color-focused: rgba(255, 255, 255, 0.35);
+  margin-bottom: 0.6rem;
+}
+
+ion-label {
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+}
+
+ion-input {
+  color: #fff;
+}
+.BtnS {
+  margin-top: 8px;
+  --background: linear-gradient(90deg, #00e676, #00bfa5);
+  --border-radius: 6px;
+  font-weight: 600;
+}
+
+
+/* === CONTENEDOR PRINCIPAL DEL LISTADO === */
+.colMobi {
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
+  padding: 1rem;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100%;
+  width: 100%;                /* 👈 ocupa todo el ancho disponible */
+  box-sizing: border-box;
+}
+
+/* === ENCABEZADO Y TABLA === */
+.colMobi h2 {
+  margin: 0 0 0.8rem 0.4rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  text-align: left;
+}
+
+.tabla-header {
+  border-bottom: 2px solid rgba(255, 255, 255, 0.25);
+  font-weight: 600;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+  width: 100%;
+}
+
+/* === FILAS Y COLUMNAS === */
+ion-row {
+  width: 100%;
+  justify-content: space-between;
+}
+
+.tabla-col {
+  flex: 1;                     /* 👈 cada columna reparte el ancho */
+  text-align: left;
+  color: #fff;
+  font-size: 1rem;
+  background: transparent;
+  border-right: 1px solid rgba(255,255,255,0.1);
+}
+
+.tabla-col:last-child {
+  border-right: none;
+}
+
+/* === GRILLA === */
+ion-grid {
+  width: 100%;                 /* 👈 fuerza el grid a ocupar todo el espacio */
+  padding: 0;
+}
+=======
   gap: 7px;
 }
 
@@ -52,3 +159,4 @@ ion-row {
   background: rgba(200, 230, 201, 0.4);
   border-right: #ffffff 2px solid;
 }
+>>>>>>> 393abd68a4419fd29cddc12ab28ebe56679db230

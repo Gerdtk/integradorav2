@@ -1,163 +1,158 @@
-//Pagina de Plantas - CRUD completo ejemplo (chat lo dio xd)
 import { useEffect, useState } from "react";
 import {
-  IonPage, IonHeader, IonToolbar, IonTitle, IonContent,
-  IonList, IonItem, IonLabel, IonButton, IonInput
+  IonPage,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonList,
+  IonItem,
+  IonLabel,
+  IonButton,
+  IonIcon,
+  IonTextarea,
+  IonInput,
 } from "@ionic/react";
+import { logOutOutline, ellipsisVertical } from "ionicons/icons";
+import "./Plantas.css";
 
-const API_URL = "http://127.0.0.1:5001/imk2-3c2db/us-central1/api/Plantas";
+const API_URL =
+  "http://127.0.0.1:5001/integradora2-4b395/us-central1/api/PlantasGeneral";
 
 interface Planta {
   id: string;
   nombre: string;
-  estado: string;
-  cantidad: number;
+  tipo: string;
+  estado?: string;
+  fechaIngreso?: string;
 }
 
 const Plantas: React.FC = () => {
   const [plantas, setPlantas] = useState<Planta[]>([]);
-  const [nombre, setNombre] = useState("");
-  const [estado, setEstado] = useState("");
-  const [cantidad, setCantidad] = useState<number>(0);
-  const [editando, setEditando] = useState<string | null>(null);
+  const [fechaApp, setFechaApp] = useState<string>("");
+  const [nombreSel, setNombreSel] = useState<string>("--");
+  const[showForm, setShowForm] = useState(false);
 
-  // Obtener plantas
-  const obtenerPlantas = async () => {
-    try {
-      const res = await fetch(API_URL);
-      const data = await res.json();
-      setPlantas(data);
-    } catch (err) {
-      console.error("Error al obtener plantas:", err);
-    }
-  };
-
+  // Obtener listado desde el backend
   useEffect(() => {
-    obtenerPlantas();
-  }, []);
-
-  // Agregar o actualizar planta
-  const guardarPlanta = async () => {
-    if (!nombre || !estado || cantidad <= 0) return;
-
-    const nuevaPlanta = { nombre, estado, cantidad, usuario: "Sistema" };
-
-    try {
-      if (editando) {
-        await fetch(`${API_URL}/${editando}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(nuevaPlanta),
-        });
-        setEditando(null);
-        setNombre("");
-        setEstado("");
-        setCantidad(0);
-      } else {
-        await fetch(API_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(nuevaPlanta),
-        });
+    const obtenerPlantas = async () => {
+      try {
+        const res = await fetch(API_URL);
+        const data = await res.json();
+        setPlantas(data);
+      } catch (err) {
+        console.error("Error al obtener plantas:", err);
       }
+    };
+    obtenerPlantas();
 
-      setNombre("");
-      setEstado("");
-      setCantidad(0);
-      obtenerPlantas();
-    } catch (error) {
-      console.error("Error al guardar planta:", error);
-    }
-  };
-
-  // Eliminar planta
-  const eliminarPlanta = async (id: string, nombrePlanta: string) => {
-    try {
-      await fetch(`${API_URL}/${id}`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          nombre: nombrePlanta,
-          usuario: "Sistema"
-        })
-      });
-
-      obtenerPlantas();
-    } catch (error) {
-      console.error("Error al eliminar planta:", error);
-    }
-  };
-
-
-  // Cargar datos en el formulario al editar
-  const editarPlanta = (planta: Planta) => {
-    setEditando(planta.id);
-    setNombre(planta.nombre);
-    setEstado(planta.estado);
-    setCantidad(planta.cantidad);
-  };
+    // Fecha actual
+    const fechaActual = new Date();
+    const formato = fechaActual.toLocaleString("es-MX", {
+      year: "2-digit",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    setFechaApp(formato);
+  }, []);
 
   return (
     <IonPage>
+      {/* === Botón Salir === */}
+      <IonButton routerLink="./Home" className="btnE">
+        <IonIcon icon={logOutOutline}></IonIcon>
+      </IonButton>
+
+      {/* === Encabezado === */}
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Gestión de Plantas</IonTitle>
+          <IonTitle>Panel de Plantas</IonTitle>
         </IonToolbar>
       </IonHeader>
 
-      <IonContent className="ion-padding">
-        {/* Formulario */}
-        <IonItem>
-          <IonLabel position="stacked">Nombre</IonLabel>
-          <IonInput
-            value={nombre}
-            onIonChange={(e) => setNombre(e.detail.value!)}
-            placeholder="Ej. Helecho"
-          />
-        </IonItem>
-
-        <IonItem>
-          <IonLabel position="stacked">Estado</IonLabel>
-          <IonInput
-            value={estado}
-            onIonChange={(e) => setEstado(e.detail.value!)}
-            placeholder="Ej. Buena"
-          />
-        </IonItem>
-
-        <IonItem>
-          <IonLabel position="stacked">Cantidad</IonLabel>
-          <IonInput
-            type="number"
-            value={cantidad}
-            onIonChange={(e) => setCantidad(Number(e.detail.value!))}
-          />
-        </IonItem>
-
-        <IonButton expand="block" onClick={guardarPlanta}>
-          {editando ? "Actualizar Planta" : "Agregar Planta"}
-        </IonButton>
-
-        {/* Lista */}
-        <IonList>
-          {plantas.length > 0 ? (
-            plantas.map((planta) => (
-              <IonItem key={planta.id}>
-                <IonLabel>
-                  <h2>{planta.nombre}</h2>
-                  <p>Estado: {planta.estado}</p>
-                  <p>Cantidad: {planta.cantidad}</p>
-                </IonLabel>
-                <IonButton onClick={() => editarPlanta(planta)}>Editar</IonButton>
-                <IonButton color="danger" onClick={() => eliminarPlanta(planta.id, planta.nombre)}>
-                  Eliminar
+      <IonContent fullscreen className="vista-plantas">
+        <IonGrid>
+          <IonRow>
+            {/* === Columna Izquierda: Agregar Nueva Planta === */}
+            <IonCol size="3" className="col-agregar">
+               <h2>Agregar nueva planta</h2>
+              <div className={`toggle-triangulo ${showForm ? "activo" : ""}`}
+              onClick={()=> setShowForm(!showForm)}></div>
+              {showForm && (
+              <form className="form-planta">
+                <IonInput label="Nombre" labelPlacement="stacked" placeholder="Ej. Lavanda" />
+                <IonInput label="Tipo" labelPlacement="stacked" placeholder="Interior / Exterior" />
+                <IonButton expand="block" color="success">
+                  Guardar
                 </IonButton>
-              </IonItem>
-            ))
-          ) : (
-            <p>No hay plantas registradas.</p>
-          )}
-        </IonList>
+              </form>
+              )}
+            </IonCol>
+
+            {/* === Columna Central === */}
+            <IonCol size="6" className="col-central">
+              {/* Nombre Planta + Fecha */}
+              <IonRow className="fila-header">
+                <IonCol size="7">
+                  <h3 className="nombre-planta">{nombreSel}</h3>
+                </IonCol>
+                <IonCol size="5" className="fecha-app">
+                  <p>Fecha app: {fechaApp}</p>
+                </IonCol>
+              </IonRow>
+
+              {/* Asset de humedad */}
+              <IonRow className="fila-asset" justify-content="center">
+              
+                  <div className="asset-humedad">
+                    <p>Asset de la planta respecto a su humedad</p>
+                    {/* Aquí irá la animación o gráfico dinámico */}
+                  </div>
+              
+              </IonRow>
+
+              {/* Comentarios o recordatorios */}
+              <IonRow className="fila-comentarios" justify-content="center">
+                  <h4>Comentarios o recordatorios</h4><br/>
+
+                  <IonTextarea
+                    placeholder="Escribe una nota o recordatorio..."
+                    autoGrow={true}
+                  ></IonTextarea>
+                
+              </IonRow>
+            </IonCol>
+
+            {/* === Columna Derecha: Listado de plantas === */}
+            <IonCol size="3" className="col-listado">
+              <h2>Listado de plantas</h2>
+              <IonList>
+                {plantas.length > 0 ? (
+                  plantas.map((planta) => (
+                    <IonItem key={planta.id} button onClick={() => setNombreSel(planta.nombre)}>
+                      <IonLabel>
+                        <h3>{planta.nombre}</h3>
+                        <p>
+                          {planta.estado || planta.tipo} | {planta.fechaIngreso || "—"}
+                        </p>
+                      </IonLabel>
+                      <IonButton fill="clear" slot="end">
+                        <IonIcon icon={ellipsisVertical} />
+                      </IonButton>
+                    </IonItem>
+                  ))
+                ) : (
+                  <p>No hay plantas registradas.</p>
+                )}
+              </IonList>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
       </IonContent>
     </IonPage>
   );

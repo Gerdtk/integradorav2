@@ -74,4 +74,17 @@ ion-content::part(scroll) {
     inset  0 -2px 10px rgba(0,0,0,0.5);
     background: rgba(0, 20, 0, 0.7);
   }
+<<<<<<< HEAD
 }
+
+:root {
+  /* === FUENTE GLOBAL === */
+  --ion-font-family: 'Poppins', 'Segoe UI', sans-serif;
+  --ion-text-color: #000;
+}
+ion-content{
+  color: var(--ion-text-color) !important;
+}
+=======
+}
+>>>>>>> 393abd68a4419fd29cddc12ab28ebe56679db230

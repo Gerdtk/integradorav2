@@ -1,168 +1,123 @@
-//import { IonIcon, IonCol, IonRow } from '@ionic/react';
-//import { logOutOutline, } from 'ionicons/icons';
+import { IonPage, IonContent, IonIcon, IonButton, IonCol, IonRow, IonGrid, IonItem, IonLabel, IonInput } from '@ionic/react';
+import { logOutOutline, chevronDown, chevronUp } from 'ionicons/icons';
+import { FormEvent, useState } from 'react';
 import './Mobiliario.css';
-import { useEffect, useState } from 'react';
-import {
-  IonPage, IonHeader, IonToolbar, IonTitle, IonContent,
-  IonList, IonItem, IonLabel, IonButton, IonInput
-} from "@ionic/react";
 
-const API_URL = "http://127.0.0.1:5001/imk2-3c2db/us-central1/api/Mobiliario";
+export default function NuevoObj() {
+  const [showForm, setShowForm] = useState(false);
 
-interface Mobiliario {
-  id: string;
-  nombre: string;
-  estado: string;
-  cantidad: number;
-}
-
-
-const Mobiliarios: React.FC = () => {
-  const [mobiliario, setMobiliario] = useState<Mobiliario[]>([]);
-  const [nombre, setNombre] = useState("");
-  const [estado, setEstado] = useState("");
-  const [cantidad, setCantidad] = useState<number>(0);
-  const [editando, setEditando] = useState<string | null>(null);
-
-  // Obtener Mobiliario
-  const obtenerMobiliario = async () => {
-    try {
-      const res = await fetch(API_URL);
-      const data = await res.json();
-      setMobiliario(data);
-    } catch (err) {
-      console.error("Error al obtener mobiliario:", err);
-    }
-  };
-
-  useEffect(() => {
-    obtenerMobiliario();
-  }, []);
-
-  // Agregar o actualizar planta
-  const guardarMobiliario = async () => {
-    if (!nombre || !estado || cantidad <= 0) return;
-
-    const nuevoMobiliario = { nombre, estado, cantidad, usuario: "Sistema" };
-
-    try {
-      if (editando) {
-        await fetch(`${API_URL}/${editando}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(nuevoMobiliario),
-        });
-        setEditando(null);
-        setNombre("");
-        setEstado("");
-        setCantidad(0);
-      } else {
-        await fetch(API_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(nuevoMobiliario),
-        });
-      }
-
-      setNombre("");
-      setEstado("");
-      setCantidad(0);
-      obtenerMobiliario();
-    } catch (error) {
-      console.error("Error al guardar mobiliario:", error);
-    }
-  };
-
-  // Eliminar planta
-  const eliminarMobiliario = async (id: string, nombreMobiliario: string) => {
-    try {
-      await fetch(`${API_URL}/${id}`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          nombre: nombreMobiliario,
-          usuario: "Sistema"
-        })
-      });
-
-      obtenerMobiliario();
-    } catch (error) {
-      console.error("Error al eliminar mobiliario:", error);
-    }
-  };
-
-
-  // Cargar datos en el formulario al editar
-  const editarMobiliario = (mobiliario: Mobiliario) => {
-    setEditando(mobiliario.id);
-    setNombre(mobiliario.nombre);
-    setEstado(mobiliario.estado);
-    setCantidad(mobiliario.cantidad);
-  };
+  function handleSubmit(event: FormEvent<HTMLFormElement>): void {
+    event.preventDefault();
+    console.log("Formulario enviado correctamente 🚀");
+  }
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Gestión de Mobiliario</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-
-      <IonContent className="ion-padding">
-        {/* Formulario */}
-        <IonItem>
-          <IonLabel position="stacked">Nombre</IonLabel>
-          <IonInput
-            value={nombre}
-            onIonChange={(e) => setNombre(e.detail.value!)}
-            placeholder="Ej. Pala"
-          />
-        </IonItem>
-
-        <IonItem>
-          <IonLabel position="stacked">Estado</IonLabel>
-          <IonInput
-            value={estado}
-            onIonChange={(e) => setEstado(e.detail.value!)}
-            placeholder="Ej. Buena"
-          />
-        </IonItem>
-
-        <IonItem>
-          <IonLabel position="stacked">Cantidad</IonLabel>
-          <IonInput
-            type="number"
-            value={cantidad}
-            onIonChange={(e) => setCantidad(Number(e.detail.value!))}
-          />
-        </IonItem>
-
-        <IonButton expand="block" onClick={guardarMobiliario}>
-          {editando ? "Actualizar Mobiliario" : "Agregar Mobiliario"}
+      <IonContent fullscreen>
+        <IonButton routerLink="./Home" className="btnE">
+          <IonIcon icon={logOutOutline}></IonIcon>
         </IonButton>
 
-        {/* Lista */}
-        <IonList>
-          {mobiliario.length > 0 ? (
-            mobiliario.map((mobiliario) => (
-              <IonItem key={mobiliario.id}>
-                <IonLabel>
-                  <h2>{mobiliario.nombre}</h2>
-                  <p>Estado: {mobiliario.estado}</p>
-                  <p>Cantidad: {mobiliario.cantidad}</p>
-                </IonLabel>
-                <IonButton onClick={() => editarMobiliario(mobiliario)}>Editar</IonButton>
-                <IonButton color="danger" onClick={() => eliminarMobiliario(mobiliario.id, mobiliario.nombre)}>
-                  Eliminar
-                </IonButton>
-              </IonItem>
-            ))
-          ) : (
-            <p>No hay mobiliario registrado.</p>
-          )}
-        </IonList>
+        <IonGrid>
+          <IonRow>
+            {/* === Columna 1–3: Formulario de nuevo objeto === */}
+            <IonCol sizeMd="3" sizeSm="12">
+              <div className="colNuevo">
+                <h3>
+                  <em>Nuevo objeto</em>
+                  <IonButton
+                    fill="clear"
+                    size="small"
+                    onClick={() => setShowForm(!showForm)}
+                    className="toggleBtn"
+                  >
+                    <IonIcon icon={showForm ? chevronUp : chevronDown}></IonIcon>
+                  </IonButton>
+                </h3>
+
+                <div className={`slideContainer ${showForm ? "open" : ""}`}>
+                  <form onSubmit={handleSubmit}>
+                    <IonItem>
+                      <IonLabel position="floating">Objeto</IonLabel>
+                      <IonInput name="objeto" type="text" required />
+                    </IonItem>
+
+                    <IonItem>
+                      <IonLabel position="floating">Cantidad</IonLabel>
+                      <IonInput name="cantidad" type="number" min="1" required />
+                    </IonItem>
+
+                    <IonItem>
+                      <IonLabel position="floating">Precio</IonLabel>
+                      <IonInput name="precio" type="number" step="0.01" required />
+                    </IonItem>
+
+                    <IonButton type="submit" className="BtnS">
+                      Agregar
+                    </IonButton>
+                  </form>
+                </div>
+              </div>
+            </IonCol>
+
+            {/* === Columna 4–12: Tabla o listado de mobiliario === */}
+            <IonCol sizeMd="8" sizeSm="8">
+              <div className="colMobi">
+                <h2>Mobiliario</h2>
+              </div>
+                <IonGrid>
+                  <IonRow class="tabla-header">
+                    <IonCol class="tabla-col"><strong>Objeto</strong></IonCol>
+              
+                  <IonCol class="tabla-col"><strong>Cantidad</strong></IonCol>
+                    <IonCol class="tabla-col"><strong>Precio</strong></IonCol>
+                  </IonRow>
+                  <IonRow class="fila">
+                    <IonCol>Silla</IonCol>
+                    <IonCol size="auto" class="menuPlaceholder">
+                      <div className="menuIcon"><span> ⋮ </span></div>
+                    </IonCol>
+                  </IonRow>
+                </IonGrid>
+              
+            </IonCol>
+          </IonRow>
+        </IonGrid>
       </IonContent>
     </IonPage>
   );
 }
-export default Mobiliarios;
+
+
+/* 
+====================================================================
+ PLANIFICACIÓN V2.6.1 (PARA IMPLEMENTAR EN LA SIGUIENTE ACTUALIZACIÓN)
+====================================================================
+
+ 1. MENÚ DE OPCIONES (tres puntos)
+   - Reemplazar el div.menuIcon por un <IonButton> o <IonIcon> que dispare un <IonPopover> o <IonActionSheet>.
+   - Este menú mostrará tres opciones:
+       • 🗑️ Eliminar → remover el elemento del listado.
+       • ✏️ Editar → abrir un pequeño modal con los campos del objeto seleccionados.
+       • ⭐ Destacar → alterna una clase .destacada en el <IonRow> correspondiente.
+
+ 2. FUNCIÓN “DESTACAR”
+   - Cuando el usuario elija “Destacar”, el <IonRow> se pintará de amarillo:
+       -> Añadir/remover la clase .destacada al <IonRow>.
+       -> CSS ya preparado:  background: rgba(255, 255, 0, 0.25);
+
+ 3. LISTADO DINÁMICO
+   - Reemplazar las filas estáticas por un array en estado (useState):
+       const [muebles, setMuebles] = useState<Mueble[]>([]);
+       - Cada objeto tendrá: { id, nombre, cantidad, precio, destacado }
+
+ 4. RENDERIZADO DINÁMICO
+   - map(muebles) → renderiza <IonRow> por cada item.
+   - El botón “Agregar” del formulario añadirá un nuevo elemento al array.
+
+ 5. OPCIONAL (FUTURO)
+   - Integrar con almacenamiento local o base de datos (Firebase / Realm).
+   - Mostrar totales o estadísticas rápidas (ej. cantidad total de objetos).
+
+====================================================================
+*/

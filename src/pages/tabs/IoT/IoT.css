@@ -38,3 +38,124 @@
   border-radius: 50%;
   transition: all 0.3s ease;
 }
+<<<<<<< HEAD
+
+
+/* === IoT.css === */
+
+/* Fondo general coherente con Mobiliario */
+.iot-content {
+  --background: linear-gradient(to bottom, #b8e5a5, #7a8766, #2a2b1e);
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Contenedor principal */
+.iot-grid {
+  margin-top: 2rem;
+  padding: 1rem 1.5rem;
+}
+
+/* Fila de cada módulo */
+.iot-row {
+  align-items: center;
+  margin-bottom: 1.5rem;
+  background: rgba(72, 124, 77, 0.3);
+  border-radius: 12px;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 0 8px rgba(0, 255, 0, 0.15);
+  padding: 0.7rem 0.5rem;
+  transition: transform 0.2s ease;
+}
+
+.iot-row:hover {
+  transform: scale(1.01);
+}
+
+/* Iconos a la izquierda */
+.iot-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  color: #afff9c;
+}
+
+/* Display o texto */
+.iot-display {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 1.2rem;
+  letter-spacing: 0.5px;
+  color: #e7ffe2;
+}
+
+/* Botón de luces (siguiendo estilo btnE) */
+.light-btn {
+  --background: transparent;
+  --background-activated: transparent;
+  --background-focused: transparent;
+  --background-hover: transparent;
+  --border-color: #00ff66;
+  --color: #e7ffe2;
+  --box-shadow: none;
+  --ripple-color: transparent;
+  --padding-start: 0.6rem;
+  --padding-end: 0.6rem;
+  --padding-top: 0.5rem;
+  --padding-bottom: 0.5rem;
+  --border-radius: 10px;
+  background: transparent;
+  border: 1.5px solid #76cf9a;
+  border-radius: 10px;
+  color: #e7ffe2;
+  font-weight: 500;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+
+.light-btn:hover {
+  background: #00ff66;
+  color: #121212;
+  box-shadow: 0 0 12px #00ff66;
+}
+
+/* Texto descriptivo */
+.iot-desc {
+  display: block;
+  text-align: center;
+  font-size: 1rem;
+  margin: 2rem auto;
+  width: 85%;
+  color: #f8fff6;
+  line-height: 1.6;
+}
+
+
+/* === HEADER === */
+.iot-header {
+   display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px; /* << define la altura visible del gradiente */
+  background: linear-gradient(to top, #0b4b0e7a, #00ff6694) 70%;
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid rgba(0, 255, 0, 0.2);
+  text-align: center;
+  padding: 0 1rem;
+  box-shadow: 0 0 8px rgba(0, 255, 0, 0.2);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.header-title {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  font-family: 'Times New Roman', Times, serif; font-size: 32px;
+}
+=======
+>>>>>>> 393abd68a4419fd29cddc12ab28ebe56679db230

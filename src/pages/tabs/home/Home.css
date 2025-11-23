@@ -7,31 +7,47 @@
 }
 
 .container.fade-out {
+  visibility: hidden;
     opacity: 0;
     transform: scale(0.98);
     transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    z-index: 1;
 }
 .container.fade-in {
+  visibility: visible;
     opacity: 1;
     transform: scale(1);
     transition: opacity 0.5s ease-in, transform 0.5s ease-in;
 }
 
+<<<<<<< HEAD
+.plant-card {
+    isolation: isolate; /* ... */
+    background: linear-gradient(to top #010f0066 #383838);
+=======
 
 
 
 .plant-card {
     background: rgb(247, 247, 247);
+>>>>>>> 393abd68a4419fd29cddc12ab28ebe56679db230
     border-radius: 10px;
     padding: 20px;
     width: 620px; height: 620px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     max-width: 400px;
+<<<<<<< HEAD
+    z-index: 1;
+    color: black;text-align: justify; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+=======
     text-align: justify;
     font-family: 'Times New Roman', Times, serif; font-size: 25px;
     color: #1a2d10;
     z-index: 2;
 }
+>>>>>>> 393abd68a4419fd29cddc12ab28ebe56679db230
 .plant-image {
     flex: 0.8;
     display: flex;
@@ -51,6 +67,17 @@
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+<<<<<<< HEAD
+ion-content .container{
+  isolation: isolate;
+  background: transparent;
+}
+
+
+
+
+=======
+>>>>>>> 393abd68a4419fd29cddc12ab28ebe56679db230
 .btnE{
   --background: transparent !important;
   --background-hover: transparent !important;
@@ -89,6 +116,10 @@
   transform: scale(1.3);
   border-radius: 50%;
   transition: all 0.3s ease;
+<<<<<<< HEAD
+} 
+=======
 }
+>>>>>>> 393abd68a4419fd29cddc12ab28ebe56679db230
 
 
