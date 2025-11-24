@@ -1,4 +1,4 @@
-import { Route, Redirect, Switch, useLocation} from 'react-router-dom';
+import { Redirect, Switch, useLocation } from 'react-router-dom';
 import {
   IonApp,
   IonIcon,
@@ -8,10 +8,10 @@ import {
   IonTabButton,
   IonTabs,
   setupIonicReact,
-  
+
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { person, settings, leaf,hammer } from 'ionicons/icons';
+import { person, settings, leaf, hammer } from 'ionicons/icons';
 
 import Perfil from './pages/tabs/Perfil/Perfil';
 import Home from './pages/tabs/home/Home';
@@ -19,7 +19,15 @@ import Plantas from './pages/tabs/plantas/Plantas';
 import Clientes from './pages/Clientes/Clientes';
 import Ingreso from './pages/Ingreso/Ingreso';
 import Mobiliario from './pages/tabs/Mobiliario/Mobiliario';
-//import IoT from './pages/tabs/IoT/IoT';
+import IoT from './pages/tabs/IoT/IoT';
+
+//AuthGuard para proteger las rutas y Reverse para mantener al usuario no logeado en Ingreso
+import AuthGuard from './guards/AuthGuard';
+import ReverseAuthGuard from './guards/ReverseAuthGuard';
+
+//Imports para verificar si el usuarios esta logeado lo rediriga a home
+import { AuthProvider, useAuth } from "./context/AuthContext";
+
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -44,47 +52,59 @@ import './theme/variables.css';
 setupIonicReact();
 
 const AppContent: React.FC = () => {
+  const { user } = useAuth();
 
   const location = useLocation();
   const path = location.pathname.toLowerCase();
 
-  const showIngresoTabs = ['/Clientes', '/Ingreso'].includes(path);
-  const showMainTabs = ['/Home', '/Pefil', '/plantas', '/Mobiliario', '/Iot'].includes(path);
+  const ShowTab = !user && (path === "/clientes" || path === "/Ingreso");
+  const Tabtwo = user && (
+    path === "/Home" ||
+    path === "/Perfil" ||
+    path === "/plantas" ||
+    path === "/Mobiliario" ||
+    path === "/IoT"
+  );
 
-  const ShowTab = location.pathname === '/clientes' || location.pathname === '/Ingreso'; 
-  const Tabtwo = location.pathname === '/Home' || location.pathname === '/Perfil' || location.pathname === '/plantas' || location.pathname === '/Mobiliario' || location.pathname === '/IoT';
   return (
     <IonApp>
       <IonReactRouter>
         <IonTabs>
           <IonRouterOutlet>
             <Switch>
-              <Route path="/Perfil" component={Perfil} exact />
-              <Route path="/Home" component={Home} exact />
-              <Route path="/plantas" component={Plantas} exact />
-              <Route path="/clientes" component={Clientes} exact />
-              <Route path="/Mobiliario" component={Mobiliario} exact/>
-              <Route path="/IoT" component={IoT} exact/>
-              <Route path="/Ingreso" component={Ingreso} exact/>
+
+              {/* 🔓 Ruta pública */}
+              <ReverseAuthGuard path="/Ingreso" component={Ingreso} exact />
+
+              {/* 🔒 Rutas protegidas */}
+              <AuthGuard path="/Home" component={Home} exact />
+              <AuthGuard path="/Perfil" component={Perfil} exact />
+              <AuthGuard path="/plantas" component={Plantas} exact />
+              <AuthGuard path="/clientes" component={Clientes} exact />
+              <AuthGuard path="/Mobiliario" component={Mobiliario} exact />
+              <AuthGuard path="/IoT" component={IoT} exact />
+
+              {/* 🔄 Redirección */}
               <Redirect exact from="/" to="/Ingreso" />
             </Switch>
+
           </IonRouterOutlet>
 
           {ShowTab && (
-          <IonTabBar slot="bottom">
-            <IonTabButton tab="ingreso" href="/ingreso">
-              <IonIcon icon={person} />
-              <IonLabel>Ingreso</IonLabel>
-            </IonTabButton>
+            <IonTabBar slot="bottom">
+              <IonTabButton tab="ingreso" href="/ingreso">
+                <IonIcon icon={person} />
+                <IonLabel>Ingreso</IonLabel>
+              </IonTabButton>
 
-            <IonTabButton tab="clientes" href="/clientes">
-              <IonIcon icon={settings} />
-              <IonLabel>Registro</IonLabel>
-            </IonTabButton>
-          </IonTabBar>
-        )};
+              <IonTabButton tab="clientes" href="/clientes">
+                <IonIcon icon={settings} />
+                <IonLabel>Registro</IonLabel>
+              </IonTabButton>
+            </IonTabBar>
+          )};
           {Tabtwo && (
-          <IonTabBar slot="bottom" className='semiCirculo'>
+            <IonTabBar slot="bottom" className='semiCirculo'>
               <IonTabButton tab="home" className='btn' href="/Plantas">
                 <IonIcon icon={leaf} />
                 <IonLabel>Plantas</IonLabel>
@@ -101,20 +121,23 @@ const AppContent: React.FC = () => {
                 <IonIcon icon={person} />
                 <IonLabel>Perfil</IonLabel>
               </IonTabButton>
-          </IonTabBar>
-        )};
+            </IonTabBar>
+          )};
         </IonTabs>
       </IonReactRouter>
     </IonApp>
   );
 };
 
-const App: React.FC = () =>{
-  return(
+const App: React.FC = () => {
+  {/*La Ia me dijo que esto esta turbo ilegal aca bien ilegal que no se podia repetir dos IonApp y IonReactRouter*/ }
+  return (
     <IonApp>
-      <IonReactRouter>
-        <AppContent/>
-      </IonReactRouter>
+      <AuthProvider>
+        <IonReactRouter>
+          <AppContent />
+        </IonReactRouter>
+      </AuthProvider>
     </IonApp>
   );
 };

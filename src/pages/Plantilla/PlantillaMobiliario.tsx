@@ -1,14 +1,18 @@
-//Pagina Plantilla de Mobiliario (es un backup temporal no hacer mucho caso, puede borrarse sin problema xd).
-//import { IonIcon, IonCol, IonRow } from '@ionic/react';
-//import { logOutOutline, } from 'ionicons/icons';
+//Pagina Plantilla de Mobiliario
+//Contiene Anti-inyecciones y verificacion del usuario
 import './Mobiliario.css';
 import { useEffect, useState } from 'react';
 import {
   IonPage, IonHeader, IonToolbar, IonTitle, IonContent,
   IonList, IonItem, IonLabel, IonButton, IonInput
 } from "@ionic/react";
+import { getAuth } from 'firebase/auth';
 
 const API_URL = "http://127.0.0.1:5001/imk2-3c2db/us-central1/api/Mobiliario";
+
+//Limpiar el texto para evitar inyecciones de codigo
+const cleanText = (text: string) =>
+  text.replace(/<[^>]*>?/gm, "").replace(/['"$;]/g, "").trim();
 
 interface Mobiliario {
   id: string;
@@ -17,7 +21,6 @@ interface Mobiliario {
   cantidad: number;
 }
 
-
 const Mobiliarios: React.FC = () => {
   const [mobiliario, setMobiliario] = useState<Mobiliario[]>([]);
   const [nombre, setNombre] = useState("");
@@ -25,12 +28,39 @@ const Mobiliarios: React.FC = () => {
   const [cantidad, setCantidad] = useState<number>(0);
   const [editando, setEditando] = useState<string | null>(null);
 
+  const auth = getAuth();
+
+  //Obtener token JWT de Firebase
+  const getToken = async () => {
+    return new Promise<string | null>((resolve) => {
+      const unsub = auth.onAuthStateChanged(async user => {
+        unsub();
+
+        if (!user) {
+          resolve(null);
+          return;
+        }
+
+        const token = await user.getIdToken(true);
+        resolve(token);
+      });
+    });
+  };
+
   // Obtener Mobiliario
   const obtenerMobiliario = async () => {
     try {
-      const res = await fetch(API_URL);
-      const data = await res.json();
-      setMobiliario(data);
+      const token = await getToken();
+      if (!token) {
+        console.warn("No hay token, usuario no autenticado");
+        return;
+      }
+      const res = await fetch(API_URL, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      setMobiliario(await res.json());
+
     } catch (err) {
       console.error("Error al obtener mobiliario:", err);
     }
@@ -40,53 +70,56 @@ const Mobiliarios: React.FC = () => {
     obtenerMobiliario();
   }, []);
 
-  // Agregar o actualizar planta
+  // Agregar o actualizar
   const guardarMobiliario = async () => {
     if (!nombre || !estado || cantidad <= 0) return;
 
-    const nuevoMobiliario = { nombre, estado, cantidad, usuario: "Sistema" };
+    const token = await getToken();
+
+    const nuevoMobiliario = {
+      nombre: cleanText(nombre),
+      estado: cleanText(estado),
+      cantidad,
+    };
 
     try {
-      if (editando) {
-        await fetch(`${API_URL}/${editando}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(nuevoMobiliario),
-        });
-        setEditando(null);
-        setNombre("");
-        setEstado("");
-        setCantidad(0);
-      } else {
-        await fetch(API_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(nuevoMobiliario),
-        });
-      }
+      const url = editando ? `${API_URL}/${editando}` : API_URL;
+      const method = editando ? "PUT" : "POST";
 
+      await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(nuevoMobiliario),
+      });
+
+      setEditando(null);
       setNombre("");
       setEstado("");
       setCantidad(0);
       obtenerMobiliario();
+
     } catch (error) {
-      console.error("Error al guardar mobiliario:", error);
+      console.error("Error al guardar:", error);
     }
   };
 
-  // Eliminar planta
-  const eliminarMobiliario = async (id: string, nombreMobiliario: string) => {
+  // Eliminar Mobiliario
+  const eliminarMobiliario = async (id: string) => {
     try {
+      const token = await getToken();
+
       await fetch(`${API_URL}/${id}`, {
         method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          nombre: nombreMobiliario,
-          usuario: "Sistema"
-        })
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
       });
 
       obtenerMobiliario();
+
     } catch (error) {
       console.error("Error al eliminar mobiliario:", error);
     }
@@ -134,7 +167,14 @@ const Mobiliarios: React.FC = () => {
           <IonInput
             type="number"
             value={cantidad}
-            onIonChange={(e) => setCantidad(Number(e.detail.value!))}
+            onIonChange={e => {
+              const valor = e.detail.value;
+              if (typeof valor !== "string" || valor === ""){
+                setCantidad(0);
+                return;
+              }
+              setCantidad(parseInt(valor, 10))
+            }}
           />
         </IonItem>
 
@@ -153,7 +193,7 @@ const Mobiliarios: React.FC = () => {
                   <p>Cantidad: {mobiliario.cantidad}</p>
                 </IonLabel>
                 <IonButton onClick={() => editarMobiliario(mobiliario)}>Editar</IonButton>
-                <IonButton color="danger" onClick={() => eliminarMobiliario(mobiliario.id, mobiliario.nombre)}>
+                <IonButton color="danger" onClick={() => eliminarMobiliario(mobiliario.id)}>
                   Eliminar
                 </IonButton>
               </IonItem>

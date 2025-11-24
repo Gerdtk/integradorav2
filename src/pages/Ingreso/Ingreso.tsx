@@ -3,7 +3,8 @@ import {
   IonPage, IonHeader, IonToolbar, IonTitle, IonContent,
   IonList, IonItem, IonInput, IonButton, IonLoading, IonToast
 } from '@ionic/react';
-import { useIonRouter } from '@ionic/react';
+//lo cambia todo (soluciono el problema del IonRouter JAJAJA, no tocar p)
+import { useHistory } from 'react-router-dom';
 import "./Ingreso.css";
 import {signInWithEmailAndPassword} from 'firebase/auth';
 //---------------------//
@@ -16,7 +17,7 @@ const [correo, setCorreo] =  useState('');
 const [password, setPassword] = useState('');
 const [busy, setBusy] = useState(false);
 const [toast, setToast] = useState<{open:boolean; msg:string}>({open:false, msg:''});
-const ionRouter = useIonRouter();
+const history = useHistory();
 
 const handleLogin = async () =>{
   if(!correo || !password){
@@ -27,7 +28,7 @@ const handleLogin = async () =>{
     await signInWithEmailAndPassword(auth, correo, password);
     //
     setToast({open:true, msg:'ingreso exitoso'});
-    ionRouter.push('/Home', 'forward', 'replace');
+    history.push("/Home");
 
     setCorreo('');
     setPassword('');

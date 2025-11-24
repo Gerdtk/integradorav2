@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { IonContent,
   IonGrid,
   IonRow,
@@ -7,19 +6,14 @@ import { IonContent,
   IonIcon,
   IonText,IonPage, IonHeader } from '@ionic/react';
 import { logOutOutline, waterOutline, thermometerOutline, bulbOutline} from 'ionicons/icons'; 
-=======
-import { IonContent, IonIcon, IonPage, IonButton } from '@ionic/react';
-import { logoIonic, logOutOutline} from 'ionicons/icons'; 
->>>>>>> 393abd68a4419fd29cddc12ab28ebe56679db230
 import './IoT.css'; 
 
 
 
-<<<<<<< HEAD
 function Iot() {
   return (
     <IonPage>   
-      <IonButton routerLink='./Home' className='btnE'><IonIcon icon={logOutOutline}></IonIcon></IonButton>
+      <IonButton routerLink='/Home' className='btnE'><IonIcon icon={logOutOutline}></IonIcon></IonButton>
       <IonContent fullscreen>
 
         <IonHeader className="iot-header" translucent={true}>
@@ -64,26 +58,10 @@ function Iot() {
           </IonCol>
         </IonRow>
       </IonGrid>
-=======
-function Example() {
-  return (
-    <IonPage>   
-      <IonContent fullscreen>
-        
-        <IonIcon icon={logoIonic}></IonIcon>
-        <IonIcon icon={logoIonic} size="large"></IonIcon>
-        <IonIcon icon={logoIonic} color="primary"></IonIcon>
-        <IonIcon icon={logoIonic} size="large" color="primary"></IonIcon>
-        <IonButton routerLink='./Home' className='btnE'><IonIcon icon={logOutOutline}></IonIcon></IonButton>
->>>>>>> 393abd68a4419fd29cddc12ab28ebe56679db230
         
         
       </IonContent>
     </IonPage>
   );
 }
-<<<<<<< HEAD
 export default Iot;   
-=======
-export default Example;
->>>>>>> 393abd68a4419fd29cddc12ab28ebe56679db230

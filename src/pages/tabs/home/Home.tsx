@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react';
-<<<<<<< HEAD
 import { IonContent, IonButton, IonIcon  } from '@ionic/react';
-=======
-import {IonPage, IonContent, IonButton, IonIcon  } from '@ionic/react';
->>>>>>> 393abd68a4419fd29cddc12ab28ebe56679db230
 import './Home.css';
 import { logOutOutline } from 'ionicons/icons';
 
@@ -79,36 +75,22 @@ const Home : React.FC = () =>{
   const plantaActual = plantas[indice];
   
   return (
-<<<<<<< HEAD
 
       <IonContent fullscreen >
-=======
-     <IonPage>
-      <IonContent fullscreen>
->>>>>>> 393abd68a4419fd29cddc12ab28ebe56679db230
         <div className={`container ${visible ? 'fade-in' : 'fade-out'}`} >
           <div className="plant-card">
             <h2 style={{ textAlign: "center" }}><b>{plantaActual.common_name}</b></h2>
             <h3><em>{plantaActual.scientific_name}</em></h3>
             <h3><b>Familia:</b><br/>{plantaActual.family}</h3>
             <h3><b>Descripción:</b></h3>
-<<<<<<< HEAD
             <p >{textoActual}</p>
-=======
-            <p>{textoActual}</p>
->>>>>>> 393abd68a4419fd29cddc12ab28ebe56679db230
             </div>
           <div className="plant-image">
             <img src={imagenActual} alt={plantaActual.common_name} />
           </div>
         </div>
-        <IonButton className="btnE" routerLink='/'><IonIcon icon={logOutOutline}></IonIcon></IonButton>
+        <IonButton className="btnE" routerLink='/Ingreso'><IonIcon icon={logOutOutline}></IonIcon></IonButton>
       </IonContent>
-<<<<<<< HEAD
-
-=======
-    </IonPage>
->>>>>>> 393abd68a4419fd29cddc12ab28ebe56679db230
   );
 }
 export default Home;

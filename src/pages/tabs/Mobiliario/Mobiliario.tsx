@@ -88,7 +88,6 @@ export default function NuevoObj() {
   );
 }
 
-
 /* 
 ====================================================================
  PLANIFICACIÓN V2.6.1 (PARA IMPLEMENTAR EN LA SIGUIENTE ACTUALIZACIÓN)

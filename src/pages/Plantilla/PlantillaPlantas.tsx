@@ -1,11 +1,16 @@
-//Pagina Plantilla de Plantas (es un backup temporal no hacer mucho caso, puede borrarse sin problema xd).
+//Pagina Plantilla de Plantas con Firebase Auth + Sanitización + Token
 import { useEffect, useState } from "react";
 import {
   IonPage, IonHeader, IonToolbar, IonTitle, IonContent,
   IonList, IonItem, IonLabel, IonButton, IonInput
 } from "@ionic/react";
+import { getAuth } from "firebase/auth";
 
 const API_URL = "http://127.0.0.1:5001/imk2-3c2db/us-central1/api/Plantas";
+
+//Limpiar el texto para evitar inyecciones de codigo
+const cleanText = (text: string) =>
+  text.replace(/<[^>]*>?/gm, "").replace(/['"$;]/g, "").trim();
 
 interface Planta {
   id: string;
@@ -14,6 +19,7 @@ interface Planta {
   cantidad: number;
 }
 
+
 const Plantas: React.FC = () => {
   const [plantas, setPlantas] = useState<Planta[]>([]);
   const [nombre, setNombre] = useState("");
@@ -21,12 +27,40 @@ const Plantas: React.FC = () => {
   const [cantidad, setCantidad] = useState<number>(0);
   const [editando, setEditando] = useState<string | null>(null);
 
+  const auth = getAuth();
+
+  //Obtener token JWT de Firebase
+  const getToken = async () => {
+    return new Promise<string | null>((resolve) => {
+      const unsub = auth.onAuthStateChanged(async user => {
+        unsub();
+
+        if (!user) {
+          resolve(null);
+          return;
+        }
+
+        const token = await user.getIdToken(true);
+        resolve(token);
+      });
+    });
+  };
+
+
   // Obtener plantas
   const obtenerPlantas = async () => {
     try {
-      const res = await fetch(API_URL);
-      const data = await res.json();
-      setPlantas(data);
+      const token = await getToken();
+      if (!token) {
+        console.warn("No hay token, usuario no autenticado");
+        return;
+      }
+      const res = await fetch(API_URL, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      setPlantas(await res.json());
+
     } catch (err) {
       console.error("Error al obtener plantas:", err);
     }
@@ -36,60 +70,62 @@ const Plantas: React.FC = () => {
     obtenerPlantas();
   }, []);
 
-  // Agregar o actualizar planta
+  // Guardar o actualizar
   const guardarPlanta = async () => {
     if (!nombre || !estado || cantidad <= 0) return;
 
-    const nuevaPlanta = { nombre, estado, cantidad, usuario: "Sistema" };
+    const token = await getToken();
+
+    const nuevaPlanta = {
+      nombre: cleanText(nombre),
+      estado: cleanText(estado),
+      cantidad,
+    };
 
     try {
-      if (editando) {
-        await fetch(`${API_URL}/${editando}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(nuevaPlanta),
-        });
-        setEditando(null);
-        setNombre("");
-        setEstado("");
-        setCantidad(0);
-      } else {
-        await fetch(API_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(nuevaPlanta),
-        });
-      }
+      const url = editando ? `${API_URL}/${editando}` : API_URL;
+      const method = editando ? "PUT" : "POST";
 
+      await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(nuevaPlanta),
+      });
+
+      setEditando(null);
       setNombre("");
       setEstado("");
       setCantidad(0);
       obtenerPlantas();
+
     } catch (error) {
-      console.error("Error al guardar planta:", error);
+      console.error("Error al guardar:", error);
     }
   };
 
-  // Eliminar planta
-  const eliminarPlanta = async (id: string, nombrePlanta: string) => {
+  // Eliminar
+  const eliminarPlanta = async (id: string) => {
     try {
+      const token = await getToken();
+
       await fetch(`${API_URL}/${id}`, {
         method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          nombre: nombrePlanta,
-          usuario: "Sistema"
-        })
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
       });
 
       obtenerPlantas();
+
     } catch (error) {
       console.error("Error al eliminar planta:", error);
     }
   };
 
-
-  // Cargar datos en el formulario al editar
+  // Cargar datos para edición
   const editarPlanta = (planta: Planta) => {
     setEditando(planta.id);
     setNombre(planta.nombre);
@@ -106,23 +142,15 @@ const Plantas: React.FC = () => {
       </IonHeader>
 
       <IonContent className="ion-padding">
-        {/* Formulario */}
+
         <IonItem>
           <IonLabel position="stacked">Nombre</IonLabel>
-          <IonInput
-            value={nombre}
-            onIonChange={(e) => setNombre(e.detail.value!)}
-            placeholder="Ej. Helecho"
-          />
+          <IonInput value={nombre} onIonChange={e => setNombre(e.detail.value!)} />
         </IonItem>
 
         <IonItem>
           <IonLabel position="stacked">Estado</IonLabel>
-          <IonInput
-            value={estado}
-            onIonChange={(e) => setEstado(e.detail.value!)}
-            placeholder="Ej. Buena"
-          />
+          <IonInput value={estado} onIonChange={e => setEstado(e.detail.value!)} />
         </IonItem>
 
         <IonItem>
@@ -130,12 +158,19 @@ const Plantas: React.FC = () => {
           <IonInput
             type="number"
             value={cantidad}
-            onIonChange={(e) => setCantidad(Number(e.detail.value!))}
+            onIonChange={e => {
+              const valor = e.detail.value;
+              // Asegurarse de que valor es una cadena antes de llamar a parseInt
+              if (typeof valor !== "string" || valor === "") {
+                setCantidad(0);
+                return;
+              }
+              setCantidad(parseInt(valor, 10));
+            }}
           />
         </IonItem>
-
         <IonButton expand="block" onClick={guardarPlanta}>
-          {editando ? "Actualizar Planta" : "Agregar Planta"}
+          {editando ? "Actualizar" : "Agregar"}
         </IonButton>
 
         {/* Lista */}
@@ -148,8 +183,9 @@ const Plantas: React.FC = () => {
                   <p>Estado: {planta.estado}</p>
                   <p>Cantidad: {planta.cantidad}</p>
                 </IonLabel>
+
                 <IonButton onClick={() => editarPlanta(planta)}>Editar</IonButton>
-                <IonButton color="danger" onClick={() => eliminarPlanta(planta.id, planta.nombre)}>
+                <IonButton color="danger" onClick={() => eliminarPlanta(planta.id)}>
                   Eliminar
                 </IonButton>
               </IonItem>

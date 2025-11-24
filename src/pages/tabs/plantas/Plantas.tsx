@@ -19,8 +19,9 @@ import {
 import { logOutOutline, ellipsisVertical } from "ionicons/icons";
 import "./Plantas.css";
 
+//esta es la API correcta de la base de datos xd
 const API_URL =
-  "http://127.0.0.1:5001/integradora2-4b395/us-central1/api/PlantasGeneral";
+  "http://127.0.0.1:5001/imk2-3c2db/us-central1/api/Plantas";
 
 interface Planta {
   id: string;

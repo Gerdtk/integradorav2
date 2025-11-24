@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions";
 import express from "express";
 import cors from "cors";
-import admin from "firebase-admin";
+import * as admin from "firebase-admin";
 
 // Inicializa Firebase Admin (para manejar Firestore y Auth)
 admin.initializeApp();
@@ -15,11 +15,13 @@ app.use(express.json()); // Permite leer JSON del body
 //Importar tus rutas personalizadas
 import plantasRoutes from "./routes/plantasRoutes";
 import mobiliarioRoutes from "./routes/mobiliarioRoutes";
+import authRoutes from "./routes/authRoutes";
 //import { verifyAuth } from "./middlewares/authMiddleware";
 
 //Montar las rutas en el servidor
-app.use("/Plantas", plantasRoutes(db));
-app.use("/Mobiliario", mobiliarioRoutes(db));
+app.use("/Plantas", plantasRoutes(admin.firestore()));
+app.use("/Mobiliario", mobiliarioRoutes(admin.firestore()));
+app.use("/auth", authRoutes(admin.firestore()));
 
 //Exportar como función HTTPS
 exports.api = functions.https.onRequest(app);

@@ -12,11 +12,11 @@ export async function verifyAuth(req: Request, res: Response, next: NextFunction
       return;
     }
     // Extraer el token del header
-    const idToken = authHeader.split("Bearer ")[1];
+    const idToken = authHeader.split(" ")[1];
     const decodedToken = await admin.auth().verifyIdToken(idToken);
 
     // Agregamos los datos del usuario a la request (útil en rutas protegidas)
-    (req as any).user = decodedToken;
+    res.locals.user = decodedToken;
 
     next(); // sigue con la ruta
   } catch (error: any) {
